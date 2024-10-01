@@ -1,0 +1,12 @@
+.ufae-wrapper {
+  --ufae-items-column: 3;
+}
+
+.ufae-wrapper .ufae-layout-vertical {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(0, 1fr))[var];
+      grid-template-columns: repeat(var(--ufae-items-column), minmax(0, 1fr));
+  gap: 2rem;
+}
+/*# sourceMappingURL=ufae-vertical.css.map */

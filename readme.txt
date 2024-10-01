@@ -9,7 +9,7 @@ Stable tag: 1.0.0
 License: GPL2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The Ultimate Flipbox Addon for Elementor offers interactive, customizable flipboxes for engaging content presentation, seamlessly integrating with the Elementor page builder.
+The Ultimate Flipbox Addon for Elementor provides customizable flipboxes for engaging content presentation with Elementor.
 
 == Description ==
 

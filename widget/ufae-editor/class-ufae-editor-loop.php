@@ -176,7 +176,7 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 					</div>
 				</div>
 				<!-- Elements render according to element order - END -->
-			<?
+			<?php
 		}
 
 		/**

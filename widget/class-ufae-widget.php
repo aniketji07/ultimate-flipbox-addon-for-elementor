@@ -2295,7 +2295,6 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'type'    => \Elementor\Controls_Manager::SELECT,
 					'options' => array(
 						'vertical'   => __( 'Vertical', 'ultimate-flipbox-addon-for-elementor' ),
-						'horizontal' => __( 'Horizontal', 'ultimate-flipbox-addon-for-elementor' ),
 					),
 					'default' => 'vertical',
 				)

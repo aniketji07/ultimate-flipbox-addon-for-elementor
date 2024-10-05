@@ -3,7 +3,7 @@
 * Plugin Name: Ultimate Flipbox Addon for Elementor
 * Plugin URI: https://github.com/aniketji07/ultimate-flipbox-addon-for-elementor
 * Description: The Ultimate Flipbox Plugin for Elementor lets you create stunning, interactive flipboxes to showcase your content in a visually appealing way.
-* Version: 1.0.0
+* Version: 1.0.1
 * Author: aniketji007
 * Author URI: https://github.com/aniketji007/
 * Text Domain: ultimate-flipbox-addon-for-elementor
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define constants only if they aren't already defined.
 defined( 'UFAE_FILE' ) || define( 'UFAE_FILE', __FILE__ );
-defined( 'UFAE_VERSION' ) || define( 'UFAE_VERSION', '1.0.0' );
+defined( 'UFAE_VERSION' ) || define( 'UFAE_VERSION', '1.0.1' );
 defined( 'UFAE_DIR' ) || define( 'UFAE_DIR', plugin_dir_path( UFAE_FILE ) );
 defined( 'UFAE_URL' ) || define( 'UFAE_URL', plugin_dir_url( UFAE_FILE ) );
 

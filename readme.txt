@@ -5,7 +5,7 @@ Tags: flipbox, elementor flipbox, addon, ultimate flipbox, elementor addon
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 6.6
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,13 @@ Yes, this plugin requires the Elementor page builder to function.
 You can customize the flipboxes using the Elementor editor, where you can change styles, content, and layout options.
 
 == Changelog ==
+
+= 1.0.1 | 05 October 2024 =
+* Added: Horizontal Layout.
+* Added: Horizontal slider per view & slide gap controller.
+* Fixed: Wrong textdomain issue.
+* Improved: Improved default style.
+* Improved: Improved animation styles.
 
 = 1.0.0 | 02 October 2024 =
 * Initial release of the Ultimate Flipbox Addon for Elementor.

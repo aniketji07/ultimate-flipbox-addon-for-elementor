@@ -18,16 +18,6 @@ if ( ! class_exists( 'Ufae_Frontend_Loop' ) ) {
 	class Ufae_Frontend_Loop {
 
 		/**
-		 * Holds the singleton instance of the Ufae_Frontend_Loop class.
-		 *
-		 * This static variable ensures that only one instance of the Ufae_Frontend_Loop class
-		 * is created and used throughout the application, following the singleton design pattern.
-		 *
-		 * @var Ufae_Frontend_Loop|null The single instance of the class, or null if not yet initialized.
-		 */
-		private static $instance = null;
-
-		/**
 		 * This array contains the configuration settings for the flipbox frontend rendering.
 		 *
 		 * @var array $settings The settings for the frontend loop.
@@ -54,23 +44,6 @@ if ( ! class_exists( 'Ufae_Frontend_Loop' ) ) {
 		 * @var array $back_element_order The order of elements displayed on the back side of the flipbox.
 		 */
 		private $back_element_order = array();
-
-		/**
-		 * Initializes the singleton instance of the Ufae_Frontend_Loop class.
-		 *
-		 * This method checks if an instance of the class already exists. If not, it creates a new instance
-		 * and assigns it to the static variable. This ensures that only one instance of the class is used
-		 * throughout the application.
-		 *
-		 * @param array $settings The settings to be used for the frontend loop.
-		 * @return Ufae_Frontend_Loop The single instance of the class.
-		 */
-		public static function init( $settings ) {
-			if ( null === self::$instance ) {
-				self::$instance = new self( $settings );
-			}
-			return self::$instance;
-		}
 
 		/**
 		 * Ufae_Frontend_Loop constructor.
@@ -107,14 +80,26 @@ if ( ! class_exists( 'Ufae_Frontend_Loop' ) ) {
 		 * @param array $item The item data to render.
 		 */
 		public function flipbox_items( $item ) {
-			$this->item = $item;
+			$this->item            = $item;
+			$layout                = $this->settings['ufae_layout_option'];
+			$horizontal_layout     = 'horizontal' === $layout;
+			$horizontal_item_class = $horizontal_layout ? ' swiper-slide' : '';
+			$animation             = isset( $this->settings['ufae_animation_option'] ) && ! empty( $this->settings['ufae_animation_option'] ) ? $this->settings['ufae_animation_option'] : 'flip';
+			$back_enabled          = isset( $this->item['ufae_back_enable'] ) && 'yes' === $this->item['ufae_back_enable'];
+			$back_disable_cls      = $back_enabled ? '' : ' ufae-flipbox-front_only';
 
-			echo '<div class="ufae-flipbox-item elementor-repeater-item-' . esc_attr( $this->item['_id'] ) . '">';
+			echo '<div class="ufae-flipbox-item elementor-repeater-item-' . esc_attr( $this->item['_id'] ) . esc_attr( $horizontal_item_class ) . esc_attr( $back_disable_cls ) . '">';
 			echo '<div class="ufae-flipbox-inner">';
-			$this->render_sides_content( 'front' );
-			if ( isset( $this->item['ufae_back_enable'] ) && 'yes' === $this->item['ufae_back_enable'] ) {
-				$this->render_sides_content( 'back' );
+			echo '<div class="ufae-flipbox-inner-overlay">';
+			$this->render_sides_content( 'front', '' );
+			if ( 'curtain' === $animation && $back_enabled) {
+				$this->render_sides_content( 'front', ' ufae-front_duplicate' );
+				$this->render_sides_content( 'front', ' ufae-front-duplicate_overlay' );
 			}
+			if ( $back_enabled ) {
+				$this->render_sides_content( 'back', '' );
+			}
+			echo '</div>';
 			echo '</div>';
 			echo '</div>';
 		}
@@ -127,18 +112,18 @@ if ( ! class_exists( 'Ufae_Frontend_Loop' ) ) {
 		 *
 		 * @param string $side The side of the flipbox to render ('front' or 'back').
 		 */
-		private function render_sides_content( $side ) {
+		private function render_sides_content( $side, $wrp_cls = '' ) {
 			$side = esc_html( $side );
 
 			$element_order = $this->{$side . '_element_order'};
 
-			echo '<div class="ufae-flipbox-' . esc_html( $side ) . '">';
+			echo '<div class="ufae-flipbox-' . esc_attr( $side ) . esc_attr( $wrp_cls ) . '">';
 			echo '<div class="ufae-flipbox-content-overlay">';
 			echo '<div class="ufae-flipbox-content">';
 
 			foreach ( $element_order as $element ) {
 
-				$element_enable = isset( $this->settings[ 'ufae_' . $side . '_' . $element . '_enable' ] ) && 'no' === $this->settings[ 'ufae_' . $side . '_' . $element . '_enable' ] ? false : true;
+				$element_enable = isset( $this->settings[ 'ufae_' . $side . '_' . $element . '_enable' ] ) && 'yes' !== $this->settings[ 'ufae_' . $side . '_' . $element . '_enable' ] ? false : true;
 
 				if ( ! $element_enable ) {
 					continue;

@@ -30,7 +30,7 @@ if ( ! class_exists( 'Ufae_Editor_Output' ) ) {
 		 * Initializes the loop object.
 		 */
 		public function __construct() {
-			$this->loop_obj = Ufae_Editor_Loop::init();
+			$this->loop_obj = new Ufae_Editor_Loop();
 		}
 
 		/**
@@ -44,15 +44,41 @@ if ( ! class_exists( 'Ufae_Editor_Output' ) ) {
 			<#
 				var widgetId=settings.widget_id;
 				var layout=settings.ufae_layout_option;
+				const horizontal_layout = 'horizontal' === layout;
 				var animation=settings.ufae_animation_option ? settings.ufae_animation_option : 'flip' ;
+				let animation_dir=settings.ufae_flip_direction && '' !== settings.ufae_flip_direction ? '-'+settings.ufae_flip_direction : '-left' ;
+				animation_dir              = 'flip' === animation ? animation_dir : '';
+				
+				view.addRenderAttribute( 'ufae_container' , {'class': ['ufae-container','ufae-layout-'+layout],'data-ufae-animation':animation+animation_dir});
+				
+				if(horizontal_layout){
+					
+					const horizontal_container_class = horizontal_layout ? 'ufae_horizontal_container' : '';
+					
+					view.addRenderAttribute( 'ufae_container' , {'class': horizontal_container_class,'data-ufae-slideview':settings.ufae_hr_slider_perview_control || 2});
+				}
 
-				view.addRenderAttribute( 'ufae_container' , {'class': ['ufae-container','ufae-layout-'+layout],'data-ufae-animation':animation});
 				#>
 				<div {{{ view.getRenderAttributeString( "ufae_container" ) }}}>
-					<?php
-					$this->loop_obj->flipbox_items();
-					?>
+				<# if ( horizontal_layout ) { #>
+					<div class="ufae-swiper-container"><div class="swiper-wrapper">
+				<# } #>
+
+				<?php
+				$this->loop_obj->flipbox_items();
+				?>
+
+				<# if ( horizontal_layout ) { #>
+					</div></div>
+				<# } #>
+
 				</div>
+
+				<# if ( horizontal_layout ) { #>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+					<div class="ufae-swiper-pagination"></div>
+				<# } #>
 		</div>
 
 			<?php

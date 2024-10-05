@@ -18,31 +18,6 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 	class Ufae_Editor_Loop {
 
 		/**
-		 * The single instance of the class.
-		 *
-		 * This variable holds the singleton instance of the Ufae_Frontend_Loop class.
-		 *
-		 * @var Ufae_Frontend_Loop|null
-		 */
-		private static $instance = null;
-
-		/**
-		 * Initializes the singleton instance of the class.
-		 *
-		 * Checks if an instance of the class already exists. If not, it creates a new instance
-		 * and assigns it to the static variable. This ensures that only one instance of the class is used
-		 * throughout the application.
-		 *
-		 * @return Ufae_Frontend_Loop The single instance of the class.
-		 */
-		public static function init() {
-			if ( null === self::$instance ) {
-				self::$instance = new self();
-			}
-			return self::$instance;
-		}
-
-		/**
 		 * Renders the flipbox items for the editor.
 		 *
 		 * This function checks if there are any flipbox items available in the settings.
@@ -54,19 +29,37 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 		public function flipbox_items() {
 			?>
 			<#
-			var listItems=settings.ufae_lists;
+
+			const listItems=settings.ufae_lists;
+			const horizontal_item_class = horizontal_layout ? ' swiper-slide' : '';
+			
 			if (Array.isArray(listItems) && listItems.length> 0) { #>
-			<# _.each(listItems, (item)=> { #>
-				<div class="ufae-flipbox-item elementor-repeater-item-{{{item['_id']}}}">
+				<# _.each(listItems, (item)=> { 
+					const backEnabled=item.ufae_back_enable && item.ufae_back_enable==='yes';
+					const backDisableCls=backEnabled ? '' : ' ufae-flipbox-front_only'
+				#>
+				<div class="ufae-flipbox-item elementor-repeater-item-{{{item['_id']}}}{{{horizontal_item_class}}}{{{backDisableCls}}}">
 					<div class="ufae-flipbox-inner">
-						<?php
-						$this->render_sides_content( 'front' );
-						?>
-						<# if (item.ufae_back_enable && item.ufae_back_enable==='yes' ) { #>
+						<div class="ufae-flipbox-inner-overlay">
 							<?php
-							$this->render_sides_content( 'back' );
+							$this->render_sides_content( 'front', '' );
 							?>
-						<# } #>
+							<# if ( 'curtain' === animation && backEnabled ) { #>
+								<?php
+								$this->render_sides_content( 'front', ' ufae-front_duplicate' );
+								?>
+							<# } 
+							if ( 'curtain' === animation && backEnabled ) { #>
+								<?php
+								$this->render_sides_content( 'front', ' ufae-front-duplicate_overlay' );
+								?>
+							<# } 
+							if (backEnabled) { #>
+								<?php
+								$this->render_sides_content( 'back', '' );
+								?>
+							<# } #>
+						</div>
 					</div>
 				</div>
 			<# }); #>
@@ -83,7 +76,7 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 		 * @param string $side The side of the flipbox to render ('front' or 'back').
 		 * @return void
 		 */
-		private function render_sides_content( $side ) {
+		private function render_sides_content( $side, $wrp_cls = '' ) {
 			?>
 			<#
 				let render_side='' ;
@@ -102,7 +95,7 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 			}
 			?>
 			<#
-				<!-- Change elemenet orders - START -->
+			<!-- Change elemenet orders - START -->
 				var order_settings=settings['ufae_' + render_side + '_element_position' ];
 				var predefined_order=new Array('icon', 'title' , 'desc' , 'button' );
 
@@ -124,11 +117,11 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 				element_order.push(element);
 				}
 				});
-				#>
 				<!-- Change elemenet orders - END -->
 
 				<!-- Elements render according to element order - START -->
-				<div class="ufae-flipbox-{{{render_side}}}">
+				#>
+				<div class="ufae-flipbox-{{{render_side}}} <?php echo esc_attr( $wrp_cls ); ?>">
 					<div class="ufae-flipbox-content-overlay">
 						<div class="ufae-flipbox-content">
 							<#
@@ -175,7 +168,9 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 						</div>
 					</div>
 				</div>
-				<!-- Elements render according to element order - END -->
+				<#
+					<!-- Elements render according to element order - END -->
+				#>
 			<?php
 		}
 

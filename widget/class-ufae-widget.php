@@ -34,10 +34,46 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 
 			$ext = ( true ) ? '.min' : ''; // Use minified CSS if $min_v is true
 
+			$js_common_dep = array( 'elementor-frontend' );
+
+			// Check if the user is logged in and not in preview mode
+			if ( ! \Elementor\Plugin::$instance->preview->is_preview_mode() && is_user_logged_in() ) {
+				$js_common_dep = array( 'elementor-common', 'elementor-frontend' );
+			}
+
 			// Register styles
 			wp_register_style( 'ufae-common-style', UFAE_URL . 'assets/css/ufae-common' . $ext . '.css', array(), UFAE_VERSION, 'all' );
 			wp_register_style( 'ufae-vertical-style', UFAE_URL . 'assets/css/ufae-vertical' . $ext . '.css', array(), UFAE_VERSION, 'all' );
 			wp_register_style( 'ufae-horizontal-style', UFAE_URL . 'assets/css/ufae-horizontal' . $ext . '.css', array(), UFAE_VERSION, 'all' );
+
+			// Register scripts
+			wp_register_script( 'ufae-common-script', UFAE_URL . 'assets/js/ufae-common' . $ext . '.js', $js_common_dep, UFAE_VERSION, true );
+			wp_register_script( 'ufae-horizontal-script', UFAE_URL . 'assets/js/ufae-horizontal' . $ext . '.js', $js_common_dep, UFAE_VERSION, true );
+		}
+
+		/**
+		 * Get the script dependencies for the widget.
+		 *
+		 * This method checks if the Elementor editor is in edit or preview mode
+		 * and returns the appropriate scripts based on the layout setting.
+		 *
+		 * @return array List of script handles to be enqueued.
+		 */
+		public function get_script_depends() {
+			$scripts = array( 'ufae-common-script' );
+
+			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
+				return array_merge( $scripts, array( 'ufae-horizontal-script' ) );
+			}
+
+			$settings = $this->get_settings_for_display();
+			$layout   = $settings['ufae_layout_option'];
+
+			if ( $layout === 'horizontal' ) {
+				$scripts[] = 'ufae-horizontal-script';
+			}
+
+			return $scripts;
 		}
 
 		/**
@@ -49,7 +85,21 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 		 * @return array List of style handles to be enqueued.
 		 */
 		public function get_style_depends() {
-			return array( 'ufae-common-style', 'ufae-vertical-style' );
+			$styles = array( 'ufae-common-style' );
+
+			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
+				return array_merge( $styles, array( 'ufae-horizontal-style', 'ufae-vertical-style' ) );
+			}
+
+			$settings = $this->get_settings_for_display();
+			$layout   = $settings['ufae_layout_option'];
+
+			if ( $layout === 'horizontal' ) {
+				$styles[] = 'ufae-horizontal-style';
+			} else {
+				$styles[] = 'ufae-vertical-style';
+			}
+			return $styles;
 		}
 
 		/**
@@ -252,6 +302,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'label_block' => true,
 					'condition'   => array(
 						'ufae_front_button_enable' => 'yes',
+						'ufae_back_enable!'        => 'yes',
 					),
 				)
 			);
@@ -436,7 +487,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_front_bg_color',
 				array(
-					'label'     => esc_html__( 'Front Background', 'textdomain' ),
+					'label'     => esc_html__( 'Front Background', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-box-front-bg-color: {{VALUE}}',
@@ -447,7 +498,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_front_title_color',
 				array(
-					'label'     => esc_html__( 'Front Title Color', 'textdomain' ),
+					'label'     => esc_html__( 'Front Title Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-title-front-color: {{VALUE}}',
@@ -458,7 +509,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_front_desc_color',
 				array(
-					'label'     => esc_html__( 'Front Desc Color', 'textdomain' ),
+					'label'     => esc_html__( 'Front Desc Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-desc-front-color: {{VALUE}}',
@@ -469,7 +520,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_front_icon_color',
 				array(
-					'label'     => esc_html__( 'Front Icon Color', 'textdomain' ),
+					'label'     => esc_html__( 'Front Icon Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-icon-front-color: {{VALUE}}',
@@ -480,7 +531,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_front_btn_color',
 				array(
-					'label'     => esc_html__( 'Front Button Color', 'textdomain' ),
+					'label'     => esc_html__( 'Front Button Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-btn-front-color: {{VALUE}}',
@@ -501,7 +552,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_back_bg_color',
 				array(
-					'label'     => esc_html__( 'Back Background', 'textdomain' ),
+					'label'     => esc_html__( 'Back Background', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-box-back-bg-color: {{VALUE}}',
@@ -515,7 +566,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_back_title_color',
 				array(
-					'label'     => esc_html__( 'Back Title Color', 'textdomain' ),
+					'label'     => esc_html__( 'Back Title Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-title-back-color: {{VALUE}}',
@@ -529,7 +580,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_back_desc_color',
 				array(
-					'label'     => esc_html__( 'Back Desc Color', 'textdomain' ),
+					'label'     => esc_html__( 'Back Desc Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-desc-back-color: {{VALUE}}',
@@ -543,7 +594,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_back_icon_color',
 				array(
-					'label'     => esc_html__( 'Back Icon Color', 'textdomain' ),
+					'label'     => esc_html__( 'Back Icon Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-icon-back-color: {{VALUE}}',
@@ -554,7 +605,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$flipbox_repeater->add_control(
 				'ufae_item_back_btn_color',
 				array(
-					'label'     => esc_html__( 'Back Button Color', 'textdomain' ),
+					'label'     => esc_html__( 'Back Button Color', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' .ufae-flipbox-item{{CURRENT_ITEM}}' => '--ufae-btn-back-color: {{VALUE}}',
@@ -625,14 +676,12 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 							'ufae_front_title'         => 'User Management',
 							'ufae_front_description'   => 'Learn how to manage users and roles in your WordPress site effectively.',
 							'ufae_front_button_enable' => 'no',
-							'ufae_item_front_bg_color' => '#66D9EF',
 							'ufae_back_icon_type'      => '', // Users icon for back
 							'ufae_back_title'          => 'User Roles',
 							'ufae_back_description'    => 'Understand different user roles and their permissions in WordPress.',
 							'ufae_back_button_enable'  => 'yes',
 							'ufae_back_button_text'    => 'View Roles',
 							'ufae_back_button_url'     => array( 'url' => '' ),
-							'ufae_item_back_bg_color'  => '#ff7e70',
 						),
 					),
 				)
@@ -702,7 +751,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-box-front-bg-color: {{VALUE}}',
 					),
-					'default'   => '#fbb3af',
+					'default'   => '#40D0FF',
 				)
 			);
 
@@ -822,7 +871,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-box-back-bg-color: {{VALUE}}',
 					),
-					'default'   => '#01aed9',
+					'default'   => '#408FFF',
 				)
 			);
 
@@ -943,14 +992,17 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'type'       => \Elementor\Controls_Manager::DIMENSIONS,
 					'size_units' => array( 'px', '%', 'em' ),
 					'default'    => array(
-						'top'    => '2',
-						'right'  => '0',
-						'bottom' => '2',
-						'left'   => '0',
+						'top'    => '1',
+						'right'  => '1',
+						'bottom' => '1',
+						'left'   => '1',
 						'unit'   => 'em',
 					),
 					'selectors'  => array(
-						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-box-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-box-margin-top: {{TOP}}{{UNIT}};--ufae-box-margin-right: {{RIGHT}}{{UNIT}};--ufae-box-margin-left: {{LEFT}}{{UNIT}};--ufae-box-margin-bottom: {{BOTTOM}}{{UNIT}};',
+					),
+					'condition'  => array(
+						'ufae_layout_option!' => 'horizontal',
 					),
 				)
 			);
@@ -977,20 +1029,21 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$this->add_responsive_control(
 				'ufae_container_width',
 				array(
-					'label'     => esc_html__( 'Width', 'ultimate-flipbox-addon-for-elementor' ),
-					'type'      => \Elementor\Controls_Manager::SLIDER,
-					'range'     => array(
+					'label'      => esc_html__( 'Width', 'ultimate-flipbox-addon-for-elementor' ),
+					'type'       => \Elementor\Controls_Manager::SLIDER,
+					'size_units' => array( 'px', '%', 'em', 'rem' ),
+					'range'      => array(
 						'px' => array(
 							'min'  => 0,
 							'max'  => 1200,
 							'step' => 1,
 						),
 					),
-					'default'   => array(
+					'default'    => array(
 						'size' => 100,
 						'unit' => '%',
 					),
-					'selectors' => array(
+					'selectors'  => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-box-width: {{SIZE}}{{UNIT}};',
 					),
 				)
@@ -999,20 +1052,21 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$this->add_responsive_control(
 				'ufae_container_height',
 				array(
-					'label'     => esc_html__( 'Height', 'ultimate-flipbox-addon-for-elementor' ),
-					'type'      => \Elementor\Controls_Manager::SLIDER,
-					'range'     => array(
+					'label'      => esc_html__( 'Height', 'ultimate-flipbox-addon-for-elementor' ),
+					'size_units' => array( 'px', 'em', 'rem' ),
+					'type'       => \Elementor\Controls_Manager::SLIDER,
+					'range'      => array(
 						'px' => array(
 							'min'  => 0,
 							'max'  => 1200,
 							'step' => 1,
 						),
 					),
-					'default'   => array(
+					'default'    => array(
 						'size' => 350,
 						'unit' => 'px',
 					),
-					'selectors' => array(
+					'selectors'  => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-box-height: {{SIZE}}{{UNIT}};',
 					),
 				)
@@ -1044,7 +1098,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					),
 					// 'selector' => '{{WRAPPER}} ' . esc_html($this->common_selector) . ' :where(.ufae-flipbox-front,.ufae-flipbox-back)',
 					'selectors' => array(
-						'{{WRAPPER}} ' . esc_html( $this->common_selector ) . ' :where(.ufae-flipbox-front,.ufae-flipbox-back)' => 'box-shadow: {{HORIZONTAL}}px {{VERTICAL}}px {{BLUR}}px {{SPREAD}}px {{COLOR}};',
+						'{{WRAPPER}} ' . esc_html( $this->common_selector )  => '--ufae-box-shadow-hr: {{HORIZONTAL}}px;--ufae-box-shadow-vr: {{VERTICAL}}px;--ufae-box-shadow-blur: {{BLUR}}px;--ufae-box-shadow-spread: {{SPREAD}}px;--ufae-box-shadow-color: {{COLOR}};',
 					),
 					'condition' => array(
 						'ufae_container_boxshadow_popover' => 'yes',
@@ -1133,6 +1187,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_front_title_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -1240,6 +1295,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_back_title_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -1372,6 +1428,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_front_desc_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -1478,6 +1535,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_back_desc_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -1598,6 +1656,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_front_icon_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -1735,6 +1794,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_back_icon_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -1916,6 +1976,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_front_button_enable' => 'yes',
 					),
+					'default'   => '#408FFF',
 				)
 			);
 
@@ -1931,6 +1992,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_front_button_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -2000,7 +2062,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			);
 
 			$this->add_control(
-				'ufae_icon_front_border_popover',
+				'ufae_btn_front_border_popover',
 				array(
 					'type'         => \Elementor\Controls_Manager::POPOVER_TOGGLE,
 					'label'        => esc_html__( 'Border', 'ultimate-flipbox-addon-for-elementor' ),
@@ -2049,8 +2111,8 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 						),
 					),
 					'condition'      => array(
-						'ufae_icon_front_border_popover' => 'yes',
-						'ufae_front_button_enable'       => 'yes',
+						'ufae_btn_front_border_popover' => 'yes',
+						'ufae_front_button_enable'      => 'yes',
 					),
 				)
 			);
@@ -2124,6 +2186,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_back_button_enable' => 'yes',
 					),
+					'default'   => '#40D0FF',
 				)
 			);
 
@@ -2139,6 +2202,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'condition' => array(
 						'ufae_back_button_enable' => 'yes',
 					),
+					'default'   => '#FFFFFF',
 				)
 			);
 
@@ -2208,7 +2272,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			);
 
 			$this->add_control(
-				'ufae_icon_back_border_popover',
+				'ufae_btn_back_border_popover',
 				array(
 					'type'         => \Elementor\Controls_Manager::POPOVER_TOGGLE,
 					'label'        => esc_html__( 'Border', 'ultimate-flipbox-addon-for-elementor' ),
@@ -2257,8 +2321,8 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 						),
 					),
 					'condition'      => array(
-						'ufae_icon_back_border_popover' => 'yes',
-						'ufae_back_button_enable'       => 'yes',
+						'ufae_btn_back_border_popover' => 'yes',
+						'ufae_back_button_enable'      => 'yes',
 					),
 				)
 			);
@@ -2295,6 +2359,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'type'    => \Elementor\Controls_Manager::SELECT,
 					'options' => array(
 						'vertical'   => __( 'Vertical', 'ultimate-flipbox-addon-for-elementor' ),
+						'horizontal' => __( 'Horizontal', 'ultimate-flipbox-addon-for-elementor' ),
 					),
 					'default' => 'vertical',
 				)
@@ -2306,13 +2371,13 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'label'   => esc_html__( 'Select Preset', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'    => 'ufae_design_control',
 					'options' => array(
-						'default'       => __( 'Default', 'ultimate-flipbox-addon-for-elementor' ),
+						'ufae-design-0' => __( 'Default', 'ultimate-flipbox-addon-for-elementor' ),
 						'ufae-design-1' => __( 'Simple', 'ultimate-flipbox-addon-for-elementor' ),
 						'ufae-design-2' => __( 'Bold', 'ultimate-flipbox-addon-for-elementor' ),
 						'ufae-design-3' => __( 'Clean', 'ultimate-flipbox-addon-for-elementor' ),
 					),
-					'message' => __( 'This setting changes your currently selected settings based on your selected design.', 'ultimate-flipbox-addon-for-elementor' ),
-					'default' => 'default',
+					'message' => __( 'This setting will overwrite your current settings with the selected design option.', 'ultimate-flipbox-addon-for-elementor' ),
+					'default' => 'ufae-design-0',
 				)
 			);
 
@@ -2322,13 +2387,13 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'label'   => esc_html__( 'Title Tag', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'    => \Elementor\Controls_Manager::SELECT,
 					'options' => array(
-						'h1'  => __( 'H1', 'ultimate-flipbox-addon-for-elementor' ),
-						'h2'  => __( 'H2', 'ultimate-flipbox-addon-for-elementor' ),
-						'h3'  => __( 'H3', 'ultimate-flipbox-addon-for-elementor' ),
-						'h4'  => __( 'H4', 'ultimate-flipbox-addon-for-elementor' ),
-						'h5'  => __( 'H5', 'ultimate-flipbox-addon-for-elementor' ),
-						'h6'  => __( 'H6', 'ultimate-flipbox-addon-for-elementor' ),
-						'div' => __( 'Div', 'ultimate-flipbox-addon-for-elementor' ),
+						'h1'  => 'H1',
+						'h2'  => 'H2',
+						'h3'  => 'H3',
+						'h4'  => 'H4',
+						'h5'  => 'H5',
+						'h6'  => 'H6',
+						'div' => 'Div',
 					),
 					'default' => 'h2',
 				)
@@ -2346,6 +2411,50 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'selectors' => array(
 						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-items-column: {{VALUE}};',
 					),
+					'condition' => array(
+						'ufae_layout_option!' => 'horizontal',
+					),
+				)
+			);
+
+			$this->add_responsive_control(
+				'ufae_hr_slider_perview_control',
+				array(
+					'label'     => esc_html__( 'Slides Per View', 'ultimate-flipbox-addon-for-elementor' ),
+					'type'      => \Elementor\Controls_Manager::NUMBER,
+					'default'   => 2,
+					'min'       => 1,
+					'max'       => 6,
+					'step'      => 1,
+					'condition' => array(
+						'ufae_layout_option' => 'horizontal',
+					),
+				)
+			);
+
+			$this->add_responsive_control(
+				'ufae_horizontal_slides_gap',
+				array(
+					'label'       => esc_html__( 'Horizontal Slides Gap', 'ultimate-flipbox-addon-for-elementor' ),
+					'type'        => \Elementor\Controls_Manager::SLIDER,
+					'default'     => array(
+						'size' => 20,
+						'unit' => 'px',
+					),
+					'range'       => array(
+						'px' => array(
+							'min'  => 0,
+							'max'  => 100,
+							'step' => 1,
+						),
+					),
+					'selectors'   => array(
+						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-horizontal-slide-gap: {{SIZE}}{{UNIT}};',
+					),
+					'condition'   => array(
+						'ufae_layout_option' => 'horizontal',
+					),
+					'render_type' => 'template',
 				)
 			);
 
@@ -2355,14 +2464,43 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'label'   => esc_html__( 'Flipbox Animation', 'ultimate-flipbox-addon-for-elementor' ),
 					'type'    => \Elementor\Controls_Manager::SELECT,
 					'options' => array(
-						'none'       => __( 'None', 'ultimate-flipbox-addon-for-elementor' ),
-						'flip'       => __( 'Flip', 'ultimate-flipbox-addon-for-elementor' ),
-						'fade'       => __( 'Fade', 'ultimate-flipbox-addon-for-elementor' ),
-						'zoom'       => __( 'Zoom', 'ultimate-flipbox-addon-for-elementor' ),
-						'slide'      => __( 'Slide', 'ultimate-flipbox-addon-for-elementor' ),
-						'flip-right' => __( 'Flip Right', 'ultimate-flipbox-addon-for-elementor' ),
+						'none'    => __( 'None', 'ultimate-flipbox-addon-for-elementor' ),
+						'flip'    => __( 'Flip', 'ultimate-flipbox-addon-for-elementor' ),
+						'fade'    => __( 'Fade', 'ultimate-flipbox-addon-for-elementor' ),
+						'zoom'    => __( 'Zoom', 'ultimate-flipbox-addon-for-elementor' ),
+						'slide'   => __( 'Slide', 'ultimate-flipbox-addon-for-elementor' )
 					),
 					'default' => 'flip',
+				)
+			);
+
+			$this->add_control(
+				'ufae_flip_direction',
+				array(
+					'label'     => esc_html__( 'Flip Direction', 'ultimate-flipbox-addon-for-elementor' ),
+					'type'      => \Elementor\Controls_Manager::CHOOSE,
+					'options'   => array(
+						'left'   => array(
+							'title' => esc_html__( 'Left', 'ultimate-flipbox-addon-for-elementor' ),
+							'icon'  => 'eicon-h-align-left',
+						),
+						'right'  => array(
+							'title' => esc_html__( 'Right', 'ultimate-flipbox-addon-for-elementor' ),
+							'icon'  => 'eicon-h-align-right',
+						),
+						'top'    => array(
+							'title' => esc_html__( 'Top', 'ultimate-flipbox-addon-for-elementor' ),
+							'icon'  => 'eicon-v-align-top',
+						),
+						'bottom' => array(
+							'title' => esc_html__( 'Bottom', 'ultimate-flipbox-addon-for-elementor' ),
+							'icon'  => 'eicon-v-align-bottom',
+						),
+					),
+					'default'   => 'left',
+					'condition' => array(
+						'ufae_animation_option' => 'flip',
+					),
 				)
 			);
 
@@ -2377,7 +2515,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'step'        => 100,
 					'description' => esc_html__( 'Set the duration of the CSS transition in milliseconds.', 'ultimate-flipbox-addon-for-elementor' ),
 					'selectors'   => array(
-						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-transition-timing: {{VALUE}}ms;',
+						'{{WRAPPER}} ' . esc_html( $this->common_selector ) => '--ufae-transition-timing: {{VALUE}};',
 					),
 				)
 			);

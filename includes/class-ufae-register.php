@@ -39,6 +39,7 @@ if ( ! class_exists( 'Ufae_Register' ) ) {
 		public function __construct() {
 			add_action( 'elementor/widgets/register', array( $this, 'ufae_register_widget' ) );
 			add_action( 'elementor/init', array( $this, 'ufae_register_category' ) );
+			add_action( 'elementor/controls/register', array( $this, 'ufae_register_custom_controller' ) );
 		}
 
 		/**
@@ -55,6 +56,17 @@ if ( ! class_exists( 'Ufae_Register' ) ) {
 				),
 				1 // Position.
 			);
+		}
+
+		/**
+		 * Registers a custom controller for the UFAE widget.
+		 *
+		 * @param \Elementor\Controls_Manager $controls_manager The controls manager instance.
+		 * @return void
+		 */
+		public function ufae_register_custom_controller( $controls_manager ) {
+			require_once UFAE_DIR . 'admin/controls/class-ufae-control-preset.php';
+			$controls_manager->register( new Ufae_Control_Preset() );
 		}
 
 		/**

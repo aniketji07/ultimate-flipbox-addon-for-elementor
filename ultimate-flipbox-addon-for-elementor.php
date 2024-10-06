@@ -1,9 +1,9 @@
 <?php
 /*
 * Plugin Name: Ultimate Flipbox Addon for Elementor
-* Plugin URI: https://github.com/aniketji07/ultimate-flipbox-addon-for-elementor
-* Description: The Ultimate Flipbox Plugin for Elementor lets you create stunning, interactive flipboxes to showcase your content in a visually appealing way.
-* Version: 1.0.1
+* Plugin URI: https://github.com/Aniketji007/ultimate-flipbox-addon-for-elementor
+* Description: Ultimate Flipbox Addon for Elementor: Create interactive flipboxes with 5 animation styles, 4 preset styles, and customizable vertical grid and horizontal carousel layouts.
+* Version: 1.0.2
 * Author: aniketji007
 * Author URI: https://github.com/aniketji007/
 * Text Domain: ultimate-flipbox-addon-for-elementor
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define constants only if they aren't already defined.
 defined( 'UFAE_FILE' ) || define( 'UFAE_FILE', __FILE__ );
-defined( 'UFAE_VERSION' ) || define( 'UFAE_VERSION', '1.0.1' );
+defined( 'UFAE_VERSION' ) || define( 'UFAE_VERSION', '1.0.2' );
 defined( 'UFAE_DIR' ) || define( 'UFAE_DIR', plugin_dir_path( UFAE_FILE ) );
 defined( 'UFAE_URL' ) || define( 'UFAE_URL', plugin_dir_url( UFAE_FILE ) );
 
@@ -93,6 +93,8 @@ if ( ! class_exists( 'Ultimate_Flipbox_Addon_For_Elementor' ) ) {
 		 */
 		public function includes_files() {
 			include_once UFAE_DIR . 'includes/class-ufae-register.php';
+			include_once UFAE_DIR . 'includes/class-ufae-ajax-handler.php';
+			Ufae_Ajax_Handler::init();
 			Ufae_Register::init();
 		}
 

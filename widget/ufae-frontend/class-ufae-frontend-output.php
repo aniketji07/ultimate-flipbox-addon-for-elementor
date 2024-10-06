@@ -59,18 +59,20 @@ if ( ! class_exists( 'Ufae_Frontend_Output' ) ) {
 			$animation                  = isset( $this->settings['ufae_animation_option'] ) && ! empty( $this->settings['ufae_animation_option'] ) ? $this->settings['ufae_animation_option'] : 'flip';
 			$animation_dir              = isset( $this->settings['ufae_flip_direction'] ) && ! empty( $this->settings['ufae_flip_direction'] ) ? '-' . $this->settings['ufae_flip_direction'] : '-left';
 			$animation_dir              = 'flip' === $animation ? $animation_dir : '';
+			$transition_time            = isset( $this->settings['ufae_transition_duration'] ) && ! empty( $this->settings['ufae_transition_duration'] ) ? $this->settings['ufae_transition_duration'] : '1000';
 			$horizontal_layout          = 'horizontal' === $layout;
 			$horizontal_container_class = $horizontal_layout ? 'ufae_horizontal_container' : '';
 
 			$this->parent_obj->add_render_attribute(
 				'ufae_container',
 				array(
-					'id'                  => 'ufae_' . esc_attr( $widget_id ),
-					'class'               => array(
+					'id'                   => 'ufae_' . esc_attr( $widget_id ),
+					'class'                => array(
 						'ufae-container',
 						'ufae-layout-' . esc_attr( $layout ),
 					),
-					'data-ufae-animation' => esc_attr( $animation . $animation_dir ),
+					'data-ufae-animation'  => esc_attr( $animation . $animation_dir ),
+					'data-ufae-transition' => esc_attr( $transition_time ),
 				)
 			);
 
@@ -81,7 +83,7 @@ if ( ! class_exists( 'Ufae_Frontend_Output' ) ) {
 						'class'               => array(
 							esc_html( $horizontal_container_class ),
 						),
-						'data-ufae-slideview' => isset( $this->settings['ufae_hr_slider_perview_control'] ) ? esc_attr( $this->settings['ufae_hr_slider_perview_control'] ) : 2
+						'data-ufae-slideview' => isset( $this->settings['ufae_hr_slider_perview_control'] ) ? esc_attr( $this->settings['ufae_hr_slider_perview_control'] ) : 2,
 					)
 				);
 			}

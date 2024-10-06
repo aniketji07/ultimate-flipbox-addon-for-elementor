@@ -45,6 +45,8 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			wp_register_style( 'ufae-common-style', UFAE_URL . 'assets/css/ufae-common' . $ext . '.css', array(), UFAE_VERSION, 'all' );
 			wp_register_style( 'ufae-vertical-style', UFAE_URL . 'assets/css/ufae-vertical' . $ext . '.css', array(), UFAE_VERSION, 'all' );
 			wp_register_style( 'ufae-horizontal-style', UFAE_URL . 'assets/css/ufae-horizontal' . $ext . '.css', array(), UFAE_VERSION, 'all' );
+			// Widget editor styles.
+			wp_register_style( 'ufae-widget-editor', UFAE_URL . 'assets/css/ufae-widget-editor' . $ext . '.css', array(), UFAE_VERSION, 'all' );
 
 			// Register scripts
 			wp_register_script( 'ufae-common-script', UFAE_URL . 'assets/js/ufae-common' . $ext . '.js', $js_common_dep, UFAE_VERSION, true );
@@ -88,7 +90,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 			$styles = array( 'ufae-common-style' );
 
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
-				return array_merge( $styles, array( 'ufae-horizontal-style', 'ufae-vertical-style' ) );
+				return array_merge( $styles, array( 'ufae-horizontal-style', 'ufae-vertical-style', 'ufae-widget-editor' ) );
 			}
 
 			$settings = $this->get_settings_for_display();
@@ -2468,7 +2470,8 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 						'flip'    => __( 'Flip', 'ultimate-flipbox-addon-for-elementor' ),
 						'fade'    => __( 'Fade', 'ultimate-flipbox-addon-for-elementor' ),
 						'zoom'    => __( 'Zoom', 'ultimate-flipbox-addon-for-elementor' ),
-						'slide'   => __( 'Slide', 'ultimate-flipbox-addon-for-elementor' )
+						'slide'   => __( 'Slide', 'ultimate-flipbox-addon-for-elementor' ),
+						'curtain' => __( 'Curtain (Hot)', 'ultimate-flipbox-addon-for-elementor' ),
 					),
 					'default' => 'flip',
 				)
@@ -2511,7 +2514,7 @@ if ( ! class_exists( 'Ufae_Widget' ) ) {
 					'type'        => \Elementor\Controls_Manager::NUMBER,
 					'default'     => 1000,
 					'min'         => 100,
-					'max'         => 10000,
+					'max'         => 50000,
 					'step'        => 100,
 					'description' => esc_html__( 'Set the duration of the CSS transition in milliseconds.', 'ultimate-flipbox-addon-for-elementor' ),
 					'selectors'   => array(

@@ -47,9 +47,11 @@ if ( ! class_exists( 'Ufae_Editor_Output' ) ) {
 				const horizontal_layout = 'horizontal' === layout;
 				var animation=settings.ufae_animation_option ? settings.ufae_animation_option : 'flip' ;
 				let animation_dir=settings.ufae_flip_direction && '' !== settings.ufae_flip_direction ? '-'+settings.ufae_flip_direction : '-left' ;
+				var transition_time=settings.ufae_transition_duration ? settings.ufae_transition_duration : '1000' ;
+				
 				animation_dir              = 'flip' === animation ? animation_dir : '';
 				
-				view.addRenderAttribute( 'ufae_container' , {'class': ['ufae-container','ufae-layout-'+layout],'data-ufae-animation':animation+animation_dir});
+				view.addRenderAttribute( 'ufae_container' , {'class': ['ufae-container','ufae-layout-'+layout],'data-ufae-animation':animation+animation_dir,'data-ufae-transition':transition_time});
 				
 				if(horizontal_layout){
 					

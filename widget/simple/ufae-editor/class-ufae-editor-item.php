@@ -1,21 +1,21 @@
 <?php
 
-namespace Ultimate_Flipbox_Addon_For_Elementor;
+namespace UFAE\Widget\Simple\Ufae_Editor;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
+if ( ! class_exists( 'Ufae_Editor_Item' ) ) {
 	/**
-	 * Class Ufae_Editor_Loop
+	 * Class Ufae_Editor_Item
 	 *
 	 * This class handles the editor loop for the Ultimate Flipbox Addon for Elementor.
 	 * It is responsible for managing the flipbox items and rendering their content.
 	 *
-	 * @package Ultimate_Flipbox_Addon_For_Elementor
+	 * @package UFAE
 	 */
-	class Ufae_Editor_Loop {
+	class Ufae_Editor_Item {
 
 		/**
 		 * Renders the flipbox items for the editor.
@@ -28,42 +28,29 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 		 */
 		public function flipbox_items() {
 			?>
-			<#
-
-			const listItems=settings.ufae_lists;
-			const horizontal_item_class = horizontal_layout ? ' swiper-slide' : '';
-			
-			if (Array.isArray(listItems) && listItems.length> 0) { #>
-				<# _.each(listItems, (item)=> { 
-					const backEnabled=item.ufae_back_enable && item.ufae_back_enable==='yes';
-					const backDisableCls=backEnabled ? '' : ' ufae-flipbox-front_only'
-				#>
-				<div class="ufae-flipbox-item elementor-repeater-item-{{{item['_id']}}}{{{horizontal_item_class}}}{{{backDisableCls}}}">
+			<# 
+			let render_side='' ;
+			let bg_type,bg_type_cls;
+			#>
+				<div class="ufae-flipbox-item">
 					<div class="ufae-flipbox-inner">
 						<div class="ufae-flipbox-inner-overlay">
 							<?php
 							$this->render_sides_content( 'front', '' );
 							?>
-							<# if ( 'curtain' === animation && backEnabled ) { #>
+							<#
+							if ( 'curtain' === animation ) { #>
 								<?php
 								$this->render_sides_content( 'front', ' ufae-front_duplicate' );
-								?>
-							<# } 
-							if ( 'curtain' === animation && backEnabled ) { #>
-								<?php
 								$this->render_sides_content( 'front', ' ufae-front-duplicate_overlay' );
 								?>
-							<# } 
-							if (backEnabled) { #>
-								<?php
-								$this->render_sides_content( 'back', '' );
-								?>
-							<# } #>
+							<# }  #>
+							<?php
+							$this->render_sides_content( 'back', '' );
+							?>
 						</div>
 					</div>
 				</div>
-			<# }); #>
-			<# } #>
 			<?php
 		}
 
@@ -78,9 +65,6 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 		 */
 		private function render_sides_content( $side, $wrp_cls = '' ) {
 			?>
-			<#
-				let render_side='' ;
-			#>
 			<?php
 			if ( 'front' === $side ) {
 				?>
@@ -96,9 +80,8 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 			?>
 			<#
 			<!-- Change elemenet orders - START -->
-				var order_settings=settings['ufae_' + render_side + '_element_position' ];
+				var order_settings=settings['ufae_simple_' + render_side + '_element_position' ];
 				var predefined_order=new Array('icon', 'title' , 'desc' , 'button' );
-
 				var element_order=[];
 
 				if (order_settings && order_settings.match(/\b(icon|title|desc|button)\b/)) {
@@ -120,14 +103,35 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 				<!-- Change elemenet orders - END -->
 
 				<!-- Elements render according to element order - START -->
+				bg_type=settings['ufae_simple_container_' + render_side + '_bg_type' ] ? settings['ufae_simple_container_' + render_side + '_bg_type' ] : '';
+				
+				bg_type_cls=' ufae-bg-'+bg_type;
+				if('image' === bg_type){
+					let image_exist=false;
+					let image_url=settings['ufae_simple_container_'+render_side+'_bg_image'] ? settings['ufae_simple_container_'+render_side+'_bg_image'] : false;
+
+					if(image_url && image_url.url && '' !== image_url.url){
+						image_exist=true;
+					}
+
+					if(!image_exist){
+						bg_type_cls='';
+					}
+				}
+
+				if('' === bg_type || 'simple' === bg_type){
+					bg_type_cls='';
+				}
+
 				#>
-				<div class="ufae-flipbox-{{{render_side}}} <?php echo esc_attr( $wrp_cls ); ?>">
+				<div class="ufae-flipbox-{{{render_side}}}{{{bg_type_cls}}} <?php echo esc_attr( $wrp_cls ); ?>">
 					<div class="ufae-flipbox-content-overlay">
 						<div class="ufae-flipbox-content">
 							<#
 							_.each(element_order, (element)=>{
-								const element_enable = ('no' === settings[ 'ufae_' + render_side + '_' + element + '_enable' ] || '' === settings[ 'ufae_' + render_side + '_' + element + '_enable' ]) ? false : true;
 
+								const element_enable = ('no' === settings[ 'ufae_simple_' + render_side + '_' + element + '_enable' ] || '' === settings[ 'ufae_simple_' + render_side + '_' + element + '_enable' ]) ? false : true;
+								
 								if ( false == element_enable ) {
 									return;
 								}
@@ -202,25 +206,25 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 			}
 			?>
 			<# 
-			const iconType= item['ufae_' + side + '_icon_type'] && '' !== item['ufae_' + side + '_icon_type'] ? item['ufae_' + side + '_icon_type'] : false;
+			const iconType= settings['ufae_simple_' + side + '_icon_type'] && '' !== settings['ufae_simple_' + side + '_icon_type'] ? settings['ufae_simple_' + side + '_icon_type'] : false;
 
 			if (iconType) {
 				if (iconType === 'icon') { #>
 					<div class="ufae-icon-wrapper">
 					<#
-					const iconHtml=elementor.helpers.renderIcon( view, item['ufae_'+side+'_icon'], { 'aria-hidden': true, 'class': 'ufae-icon' }, 'i' , 'object' );
+					const iconHtml=elementor.helpers.renderIcon( view, settings['ufae_simple_'+side+'_icon'], { 'aria-hidden': true, 'class': 'ufae-icon' }, 'i' , 'object' );
 					#>
 					{{{iconHtml.value}}}
 					</div>
 				<# 
-				} else if (iconType === 'image' && item['ufae_' + side + '_icon_image'] && '' !== item['ufae_' + side + '_icon_image']['url']) { #>
+				} else if (iconType === 'image' && settings['ufae_simple_' + side + '_icon_image'] && '' !== settings['ufae_simple_' + side + '_icon_image']['url']) { #>
 					<div class="ufae-icon-wrapper">
-					<img src="{{{item['ufae_' + side + '_icon_image']['url']}}}" alt="{{{item['ufae_' + side + '_title']}}}">
+					<img src="{{{settings['ufae_simple_' + side + '_icon_image']['url']}}}" alt="{{{settings['ufae_simple_' + side + '_title']}}}">
 					</div>
 				<# 
 				} else if (iconType === 'text') { #>
 					<div class="ufae-icon-wrapper">
-					<span>{{{item['ufae_' + side + '_icon_text']}}}</span>
+					<span>{{{settings['ufae_simple_' + side + '_icon_text']}}}</span>
 					</div>
 				<# 
 				}
@@ -258,10 +262,11 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 			?>
 			<#
 
-			const title = item['ufae_' + side + '_title'] && '' !== item['ufae_' + side + '_title'] ? item['ufae_' + side + '_title'] : false;
+			let title = settings['ufae_simple_' + side + '_title'] && '' !== settings['ufae_simple_' + side + '_title'] ? settings['ufae_simple_' + side + '_title'] : false;
 
 			if (title) {
-				const title_tag = settings.ufae_title_tag && '' !== settings.ufae_title_tag ? settings.ufae_title_tag : 'h3';
+				let title_tag = settings.ufae_simple_title_tag && '' !== settings.ufae_simple_title_tag ? settings.ufae_simple_title_tag : 'h3';
+				title_tag = title_tag.replace(/\s+/g, '');
 			#>
 				<{{{title_tag}}} class="ufae-title">{{title}}</{{{title_tag}}}>
 			<#
@@ -297,7 +302,7 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 			}
 			?>
 			<#
-			const description = item['ufae_' + side + '_description'] && '' !== item['ufae_' + side + '_description'] ? item['ufae_' + side + '_description'] : false;
+			const description = settings['ufae_simple_' + side + '_description'] && '' !== settings['ufae_simple_' + side + '_description'] ? settings['ufae_simple_' + side + '_description'] : false;
 
 			if (description) { #>
 				<p class="ufae-desc">{{{description}}}</p>
@@ -332,11 +337,11 @@ if ( ! class_exists( 'Ufae_Editor_Loop' ) ) {
 			}
 			?>
 			<#
-			const button_enable = item['ufae_' + side + '_button_enable'] ? item['ufae_' + side + '_button_enable'] : 'no';
-			const btn_text = item['ufae_' + side + '_button_text'] && '' !== item['ufae_' + side + '_button_text'] ? item['ufae_' + side + '_button_text'] : false;
+			const button_enable = settings['ufae_simple_' + side + '_button_enable'] ? settings['ufae_simple_' + side + '_button_enable'] : 'no';
+			const btn_text = settings['ufae_simple_' + side + '_button_text'] && '' !== settings['ufae_simple_' + side + '_button_text'] ? settings['ufae_simple_' + side + '_button_text'] : false;
 
 			if (btn_text && 'yes' === button_enable) {
-				const btn_url_setting = item['ufae_' + side + '_button_url'] && '' !== item['ufae_' + side + '_button_url'] ? item['ufae_' + side + '_button_url'] : false;
+				const btn_url_setting = settings['ufae_simple_' + side + '_button_url'] && '' !== settings['ufae_simple_' + side + '_button_url'] ? settings['ufae_simple_' + side + '_button_url'] : false;
 				const btn_url = btn_url_setting['url'] && '' !== btn_url_setting['url'] ? btn_url_setting['url'] : false;
 				#>
 				<div class="ufae-btn-wrapper">

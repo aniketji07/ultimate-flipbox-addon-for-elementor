@@ -1,12 +1,13 @@
 <?php
 
-namespace Ultimate_Flipbox_Addon_For_Elementor;
+namespace UFAE\Widget\Stories\Ufae_Editor;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-use Ultimate_Flipbox_Addon_For_Elementor\Ufae_Editor_Loop;
+use UFAE\Widget\Stories\Ufae_Editor\Ufae_Editor_Loop;
+
 if ( ! class_exists( 'Ufae_Editor_Output' ) ) {
 	/**
 	 * Class Ufae_Editor_Output
@@ -42,16 +43,16 @@ if ( ! class_exists( 'Ufae_Editor_Output' ) ) {
 			?>
 		<div class="ufae-wrapper">
 			<#
-				var widgetId=settings.widget_id;
+				var widgetId=view.getIDInt();
 				var layout=settings.ufae_layout_option;
 				const horizontal_layout = 'horizontal' === layout;
 				var animation=settings.ufae_animation_option ? settings.ufae_animation_option : 'flip' ;
 				let animation_dir=settings.ufae_flip_direction && '' !== settings.ufae_flip_direction ? '-'+settings.ufae_flip_direction : '-left' ;
 				var transition_time=settings.ufae_transition_duration ? settings.ufae_transition_duration : '1000' ;
 				
-				animation_dir              = 'flip' === animation ? animation_dir : '';
+				animation_dir              = ['flip', 'flip-classic', 'slide'].includes(animation) ? animation_dir : '';
 				
-				view.addRenderAttribute( 'ufae_container' , {'class': ['ufae-container','ufae-layout-'+layout],'data-ufae-animation':animation+animation_dir,'data-ufae-transition':transition_time});
+				view.addRenderAttribute( 'ufae_container' , {'id': 'ufae_story_'+widgetId, 'class': ['ufae-container','ufae-layout-'+layout],'data-ufae-animation':animation+animation_dir,'data-ufae-transition':transition_time});
 				
 				if(horizontal_layout){
 					

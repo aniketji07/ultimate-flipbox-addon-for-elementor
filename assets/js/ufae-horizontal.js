@@ -89,5 +89,6 @@ jQuery(window).on('elementor/frontend/init', () => {
     };
 
     elementorFrontend.hooks.addAction('frontend/element_ready/ufae_flipbox_widget.default', addHandler);
+    elementorFrontend.hooks.addAction('frontend/element_ready/ufae_post_flipbox_widget.default', addHandler);
 
 });

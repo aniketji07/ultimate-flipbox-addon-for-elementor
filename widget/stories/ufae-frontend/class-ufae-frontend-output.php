@@ -1,8 +1,8 @@
 <?php
 
-namespace Ultimate_Flipbox_Addon_For_Elementor;
+namespace UFAE\Widget\Stories\Ufae_Frontend;
 
-use Ultimate_Flipbox_Addon_For_Elementor\Ufae_Frontend_Loop;
+use UFAE\Widget\Stories\Ufae_Frontend\Ufae_Frontend_Loop;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -58,7 +58,7 @@ if ( ! class_exists( 'Ufae_Frontend_Output' ) ) {
 			$layout                     = $this->settings['ufae_layout_option'];
 			$animation                  = isset( $this->settings['ufae_animation_option'] ) && ! empty( $this->settings['ufae_animation_option'] ) ? $this->settings['ufae_animation_option'] : 'flip';
 			$animation_dir              = isset( $this->settings['ufae_flip_direction'] ) && ! empty( $this->settings['ufae_flip_direction'] ) ? '-' . $this->settings['ufae_flip_direction'] : '-left';
-			$animation_dir              = 'flip' === $animation ? $animation_dir : '';
+			$animation_dir              = in_array($animation, array('flip', 'flip-classic', 'slide')) ? $animation_dir : '';
 			$transition_time            = isset( $this->settings['ufae_transition_duration'] ) && ! empty( $this->settings['ufae_transition_duration'] ) ? $this->settings['ufae_transition_duration'] : '1000';
 			$horizontal_layout          = 'horizontal' === $layout;
 			$horizontal_container_class = $horizontal_layout ? 'ufae_horizontal_container' : '';
@@ -66,7 +66,7 @@ if ( ! class_exists( 'Ufae_Frontend_Output' ) ) {
 			$this->parent_obj->add_render_attribute(
 				'ufae_container',
 				array(
-					'id'                   => 'ufae_' . esc_attr( $widget_id ),
+					'id'                   => 'ufae_story_' . esc_attr( $widget_id ),
 					'class'                => array(
 						'ufae-container',
 						'ufae-layout-' . esc_attr( $layout ),

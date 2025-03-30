@@ -1,103 +1,166 @@
-=== Ultimate Flipbox Addon for Elementor ===
+=== Flipbox Addon for Elementor ===
 
-Contributors: aniketji007
-Tags: flipbox, elementor flipbox, addon, ultimate flipbox, elementor addon
+Contributors: aniketji007,dragwyb
+Tags: flipbox, elementor flipbox, flip box, ultimate flipbox, post flipbox
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 6.6
-Stable tag: 1.0.2
+Tested up to: 6.7.2
+Stable tag: 2.0.1
 License: GPL2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Ultimate Flipbox Addon for Elementor: Create interactive flipboxes with 5 animation styles, 4 preset styles, vertical grid, and horizontal carousel displays.
+Create stunning flipboxes with Post for dynamic content, Story & Basic widgets. Features dynamic content, 5 animations, 4 presets & flexible layouts for Elementor.
 
 == Description ==
 
-Introducing the Ultimate Flipbox Addon for Elementor, a powerful plugin that lets you create stunning, interactive flipboxes with 5 animation styles and 4 preset styles. Fully customize styling, content, and layout to showcase your content in a visually appealing way, with features like vertical grid and horizontal carousel displays.
+Transform your Elementor pages with the **Flipbox Addon** - a powerful suite of widgets that brings dynamic, eye-catching flipbox animations to your WordPress site. Our latest version introduces three specialized widgets:
 
-== Features ==
+- The **Post Flipbox Widget** dynamically displays your blog posts and custom content types with engaging flip animations
+- The **Story Flipbox Widget** creates immersive storytelling experiences with multiple connected flipboxes
+- The **Basic Flipbox Widget** offers a streamlined solution for simple yet stunning content reveals
 
-* **Easy to Use**: Seamlessly integrates with Elementor, allowing you to drag and drop flipboxes into your layouts.
-* **Fully Customizable**: Customize the appearance of your flipboxes with various styles, colors, and animations. Users can also choose to show or hide elements and change the content position like title, description, icon, and button.
-* **Responsive Design**: Flipboxes are fully responsive and look great on all devices.
-* **Multiple Layout Options**: Choose from various layout options, including vertical grid and horizontal carousel, to fit your design needs.
-* **Icon Support**: Add icons to your flipboxes to enhance visual appeal.
-* **Content Control**: Easily manage the content displayed on the front and back of each flipbox. Users can also use this plugin as a card by disabling the back side.
-* **Admin Notices**: Alerts users if required plugins (like Elementor) are not active.
-* **5 Animation Styles**: Flip, Fade, Zoom, Slide, and Curtain (Hot) animations to give your flipboxes a unique look.
-* **4 Preset Styles**: Default, Simple, Bold, and Clean preset styles to quickly get started with your flipbox design.
+Each widget comes with 5 smooth animation styles, 4 professionally designed presets, and extensive customization options. Create depth with gradient backgrounds, featured images, and border effects. Build responsive horizontal carousels or vertical grids. The intuitive controls give you pixel-perfect control while maintaining clean, optimized code.
+
+Whether you're showcasing blog posts, creating interactive galleries, or highlighting key features, Flipbox makes it effortless to add engaging animated content that captures attention and drives engagement.
+
+== Key Features ==
+
+- **Post Flipbox Widget**: Showcase your blog posts, custom content, or dynamic data with the new **Post Flipbox Widget**. This widget allows you to display blog post content (like featured images, titles, excerpts, and links) in a visually engaging flipbox format. It supports **horizontal layouts** and animations for interactive presentation.
+  
+- **Story Flipbox Widget**: Perfect for creating interactive and engaging story-like content. The **Story Flipbox Widget** allows you to add multiple flipboxes within a single widget, making it easy to create interactive galleries, features, or product showcases. You can use **horizontal layouts** here as well, making it an ideal choice for large-scale displays.
+
+- **Basic Flipbox Widget**: For a simple, single flipbox with a title, description, and icon. This widget is designed for those who want a clean and straightforward flipbox without extra content or layout complexities. The **Basic Flipbox Widget** is perfect for individual promotional items, features, or any content where you don’t need multiple flipboxes in a layout.
+
+- **Fully Customizable**: Customize your flipboxes with a variety of animation styles, content layout options, colors, borders, and more to suit your design needs.
+
+- **Multiple Layouts**: Choose between **vertical grid** and **horizontal carousel** layouts for an interactive presentation. Horizontal layouts are available for **Post** and **Story** widgets, while the **Basic Flipbox Widget** offers a simpler layout.
+
+- **Icon Support**: Easily add icons to your flipboxes to enhance their visual appeal.
+
+- **Responsive Design**: Flipboxes are fully responsive, ensuring that they look great on all screen sizes, from mobile devices to desktops.
+
+- **Content Control**: Show or hide elements, control content positioning (like titles, descriptions, icons, and buttons), and even disable the back of the flipbox to use it as a card.
+
+- **5 Animation Styles**: Choose from Flip, Fade, Zoom, Slide, and Curtain (Hot) animations to create stunning interactive effects for your flipboxes.
+
+- **4 Preset Styles**: Start with the Default, Simple, Bold, or Clean preset styles for quick customization, or dive deeper into the design for complete control.
 
 == Installation ==
 
 **Option 1: Using the WordPress Plugin Directory**
 
-1. **Search for the plugin:** Go to the WordPress admin dashboard and navigate to **Plugins** > **Add New**.
-2. Search for "Ultimate Flipbox Addon for Elementor" or keywords like "flipbox", "elementor flipbox", "ultimate flipbox", or "elementor addon" in the search bar.
-3. **Install the plugin:** Click the **Install Now** button for the plugin.
-4. **Activate the plugin:** Once the installation is complete, click the **Activate** button.
+1. **Search for the plugin**: Go to the WordPress admin dashboard and navigate to **Plugins** > **Add New**.
+2. Search for "Flipbox Addon for Elementor" or keywords like "flipbox", "elementor flipbox", "ultimate flipbox", or "elementor addon".
+3. **Install the plugin**: Click the **Install Now** button for the plugin.
+4. **Activate the plugin**: Once the installation is complete, click the **Activate** button.
 
 **Option 2: Manual Upload**
 
-1. **Download the plugin:** Download the latest version of the plugin from [link to your plugin download page, if applicable]. The plugin file will be a ZIP archive.
-2. **Upload the plugin:** In your WordPress admin dashboard, navigate to **Plugins** > **Add New**.
+1. **Download the plugin**: Download the latest version of the plugin from [plugin download link].
+2. **Upload the plugin**: In your WordPress admin dashboard, go to **Plugins** > **Add New**.
 3. Click the **Upload Plugin** button at the top of the page.
-4. Click **Choose File** and select the downloaded ZIP archive containing the plugin files.
-5. Click **Install Now**.
-6. Once the installation is complete, click the **Activate Plugin** button.
-
+4. Choose the downloaded ZIP archive and click **Install Now**.
+5. Once the installation is complete, click the **Activate Plugin** button.
 == Screenshots ==
 
-1. Search in Elementor tab for Ultimate Flipbox widget and show Ultimate Flipbox widget icon.
-2. Widget settings screenshot.
-3. Flipbox settings & preview GIF video.
+1. Overview of Flipbox Widgets.
+2. Story Flipbox Widget Demo.
+3. Post Flipbox Widget Demo.
+4. Basic Flipbox Widget Demo.
+5. Flipbox Animation Preview.
 
 == Frequently Asked Questions ==
 
-= Is this plugin free? =
-Yes, the Ultimate Flipbox Addon for Elementor is completely free to use.
+= Is this plugin free? =  
+Yes, the **Flipbox Addon for Elementor** is completely free to use.
 
-= Do I need Elementor to use this plugin? =
-Yes, this plugin requires the Elementor page builder to function.
+= Do I need Elementor to use this plugin? =  
+Yes, this plugin requires the Elementor page builder to function properly.
 
-= How can I customize the flipboxes? =
-You can customize the flipboxes using the Elementor editor, where you can change styles, content, and layout options.
+= How can I customize the flipboxes? =  
+You can easily customize the flipboxes using the Elementor editor, where you can change styles, content, and layout options, including adding icons and adjusting animations.
 
-= Can I create flipboxes in a vertical grid or horizontal carousel layout? =
-Yes, you can create flipboxes in a vertical grid or horizontal carousel layout.
+= Can I create flipboxes in a vertical grid or horizontal carousel layout? =  
+Yes, you can create flipboxes in both vertical grid and horizontal carousel layouts for an interactive presentation. **Horizontal layouts** are available in the **Post Flipbox Widget** and **Story Flipbox Widget**, but not in the **Basic Flipbox Widget**.
 
-= How many animation styles are available for the flipboxes? =
-There are 5 animation styles available for the flipboxes: flip, fade, zoom, slide, and curtain (Hot).
+= How many animation styles are available for the flipboxes? =  
+There are 5 animation styles available for the flipboxes: **Flip**, **Fade**, **Zoom**, **Slide**, and **Curtain (Hot)** animations.
 
-= How many preset styles are available for the flipboxes? =
-There are 4 preset styles available for the flipboxes: default, simple, bold, and clean.
+= How many preset styles are available for the flipboxes? =  
+There are 4 preset styles: **Default**, **Simple**, **Bold**, and **Clean**, which help you get started with a professional design quickly.
 
-= Can I customize the flipbox to my liking? =
-Yes, you can easily customize the flipbox to your liking, including styling, choosing which elements to show or hide, and changing the content position (title, description, icon, button).
+= What is the Basic Flipbox Widget? =  
+The **Basic Flipbox Widget** is a simplified flipbox that allows you to create a single flipbox with a title, description, and icon. This widget is designed for simpler use cases where you only need one flipbox in your design.
 
-= Can I use this plugin to create a card? =
-Yes, you can use this plugin to create a card by disabling the back side of the flipbox. This way, you can use the flipbox as a static card, with only the front side visible.
+= What is the Post Flipbox Widget? =  
+The **Post Flipbox Widget** lets you display your blog posts or custom content dynamically, showcasing featured images, titles, excerpts, and links in an interactive flipbox format. It supports **horizontal layouts** for a more engaging design.
+
+= What is the Story Flipbox Widget? =  
+The **Story Flipbox Widget** allows you to add multiple flipboxes inside a single widget. Perfect for creating interactive stories, galleries, or product showcases. It supports **horizontal layouts**, making it a versatile widget for large-scale displays.
+
+= Can I use this plugin to create a static card instead of a flipbox? =  
+Yes, you can disable the back side of the flipbox and use it as a static card for promotions or any other content display.
 
 == Changelog ==
 
+**Experience the latest version 2.0.1!**  
+Share your feedback on [Review page](https://wordpress.org/plugins/ultimate-flipbox-addon-for-elementor/#reviews). If you encounter any issues, kindly report them on [support page](https://wordpress.org/support/plugin/ultimate-flipbox-addon-for-elementor/#new-post). We're eager to assist you in resolving them.
+
+= 2.0.1 | 30 March 2025 =
+* **Added**: Bacground image overlay setting in Basic & Post flip box widget.
+* **Improve**: Renamed Plugin name Ultimate Flipbox Addon for Elementor to Flipbox Addon For Elementor
+* **Improved**: Feedback notice.
+* **Tested Up To**: WordPress 6.7.2.
+* **Tested Up To**: Elementor 3.28.1.
+* **Tested Up To**: Elementor Pro 3.28.1.
+
+= 2.0.0 | 10 March 2025 =
+* **Added**: **Post Flipbox Widget** — A dynamic way to display blog posts and custom content with flipping animations.
+* **Added**: **Story Flipbox Widget** — For creating interactive story-like content with multiple flipboxes inside a single widget.
+* **Added**: **Basic Flipbox Widget** — For creating a single flipbox with title, description, and icon.
+* **Added**: Background gradient & image settings for the flipbox widget.
+* **Added**: Border radius settings for icons in flipbox style.
+* **Added**: 3D animation depth control settings.
+* **Added**: Animation direction setting in Flip & Slide animation.
+* **Improved**: Preset styles.
+* **Improved**: Renamed Ultimate Flipbox widget to **Story Flipbox Widget** for clarity and consistency.
+* **Added**: Element position control removed to simplify the interface.
+
+= 1.0.6 | 21 December 2024 =
+* **Fixed**: JavaScript error on the front end in horizontal swiper.
+* **Fixed**: Horizontal swiper styling issue with Elementor's latest version.
+* **Tested Up To**: WordPress 6.7.1.
+* **Tested Up To**: Elementor 3.26.2.
+
+= 1.0.5 | 08 November 2024 =
+* **Improved**: Security improvements.
+* **Tested Up To**: WordPress 6.7.
+
+= 1.0.4 | 05 November 2024 =
+* **Improved**: Security improvements.
+
+= 1.0.3 | 13 October 2024 =
+* **Added**: Review notice and feedback request form.
+
 = 1.0.2 | 07 October 2024 =
-* Added: Predefined preset style for enhanced design options.
-* Added: Curtain animation style for added visual flair.
-* Improved: Flipbox side transition based on selected front or back tab for an improved user interface.
-* Improved: Extended transition timing limit for smoother animations.
+* **Added**: Predefined preset style for enhanced design options.
+* **Added**: Curtain animation style for added visual flair.
+* **Improved**: Flipbox side transition based on selected front or back tab for an improved user interface.
+* **Improved**: Extended transition timing limit for smoother animations.
 
 = 1.0.1 | 05 October 2024 =
-* Added: Horizontal Layout.
-* Added: Horizontal slider per view & slide gap controller.
-* Fixed: Wrong textdomain issue.
-* Improved: Improved default style.
-* Improved: Improved animation styles.
+* **Added**: Horizontal Layout.
+* **Added**: Horizontal slider per view & slide gap controller.
+* **Fixed**: Wrong textdomain issue.
+* **Improved**: Improved default style.
+* **Improved**: Improved animation styles.
 
 = 1.0.0 | 02 October 2024 =
 * Initial release of the Ultimate Flipbox Addon for Elementor.
 
 == Acknowledgements ==
 
-Special thanks to the Elementor team for creating such a powerful page builder and to the WordPress community for their support.
+Special thanks to the Elementor team for creating such a powerful page builder and to the WordPress community for their ongoing support.
 
 == License ==
 

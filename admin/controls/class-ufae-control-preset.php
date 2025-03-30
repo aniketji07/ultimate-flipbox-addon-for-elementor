@@ -1,4 +1,7 @@
 <?php
+
+namespace UFAE\Admin\Controls;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -42,9 +45,9 @@ if ( ! class_exists( 'Ufae_Control_Preset' ) ) {
 		 */
 		public function enqueue() {
 			$ext = '.min';
-			wp_register_style( 'ufae-control-style', UFAE_URL . 'admin/controls/assets/css/ufae-control' . $ext . '.css', array(), UFAE_VERSION );
-			wp_register_script( 'ufae-control-script', UFAE_URL . 'admin/controls/assets/js/ufae-control' . $ext . '.js', array( 'jquery' ), UFAE_VERSION );
-			wp_register_script( 'ufae-tabs-control-handler', UFAE_URL . 'admin/controls/assets/js/ufae-tabs-control-handler' . $ext . '.js', array( 'jquery' ), UFAE_VERSION );
+			wp_register_style( 'ufae-control-style', esc_url(UFAE_URL) . 'admin/controls/assets/css/ufae-control' . esc_attr($ext) . '.css', array(), esc_attr(UFAE_VERSION) );
+			wp_register_script( 'ufae-control-script', esc_url(UFAE_URL) . 'admin/controls/assets/js/ufae-control' . esc_attr($ext) . '.js', array( 'jquery' ), esc_attr(UFAE_VERSION) );
+			wp_register_script( 'ufae-tabs-control-handler', esc_url(UFAE_URL) . 'admin/controls/assets/js/ufae-tabs-control-handler' . esc_attr($ext) . '.js', array( 'jquery' ), esc_attr(UFAE_VERSION) );
 
 			wp_enqueue_style( 'ufae-control-style' );
 			wp_enqueue_script( 'ufae-control-script' );

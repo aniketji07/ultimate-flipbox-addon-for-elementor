@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultimate_Flipbox_Addon_For_Elementor;
+namespace UFAE\Widget\Stories\Ufae_Frontend;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -192,11 +192,12 @@ if ( ! class_exists( 'Ufae_Frontend_Loop' ) ) {
 		 * @param string $side The side of the flipbox to render the title for ('front' or 'back').
 		 */
 		private function render_title( $side ) {
-			$title = isset( $this->item[ 'ufae_' . $side . '_title' ] ) && ! empty( $this->item[ 'ufae_' . $side . '_title' ] ) ? $this->item[ 'ufae_' . $side . '_title' ] : false;
-
-			if ( $title ) {
-				$title_tag = isset( $this->settings['ufae_title_tag'] ) && ! empty( $this->settings['ufae_title_tag'] ) ? $this->settings['ufae_title_tag'] : 'h3';
-				echo '<' . esc_html( $title_tag ) . ' class="ufae-title">' . esc_html( $title ) . '</' . esc_html( $title_tag ) . '>';
+			$title 			= isset( $this->item[ 'ufae_' . $side . '_title' ] ) && ! empty( $this->item[ 'ufae_' . $side . '_title' ] ) ? $this->item[ 'ufae_' . $side . '_title' ] : false;
+			$allowed_tags 	= array('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div');
+			if ($title) {
+				$title_tag = isset($this->settings['ufae_title_tag']) && !empty($this->settings['ufae_title_tag']) ? $this->settings['ufae_title_tag'] : 'h3';
+				$title_tag = in_array( $title_tag, $allowed_tags ) ? $title_tag : 'h2';
+				echo '<' . esc_html( esc_attr($title_tag) ) . ' class="ufae-title">' . esc_html($title) . '</' . esc_html(esc_attr($title_tag)) . '>';
 			}
 		}
 
@@ -256,7 +257,7 @@ if ( ! class_exists( 'Ufae_Frontend_Loop' ) ) {
 			$predefined_element = array( 'icon', 'title', 'desc', 'button' );
 
 			foreach ( $sides as $side ) {
-				$order_settings = $this->settings[ 'ufae_' . $side . '_element_position' ];
+				$order_settings = isset($this->settings[ 'ufae_' . $side . '_element_position' ]) ? $this->settings[ 'ufae_' . $side . '_element_position' ] : '';
 				$order_settings = esc_html( trim( $order_settings ) );
 				$new_order      = array();
 

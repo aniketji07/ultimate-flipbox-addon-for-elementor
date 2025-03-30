@@ -1,8 +1,16 @@
 <?php
 
+namespace UFAE\Includes;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+use UFAE\Widget\Simple\Ufae_Simple_Widget;
+use UFAE\Widget\Stories\Ufae_Stories_Widget;
+use UFAE\Widget\Post\UFAE_Post_Widget;
+use UFAE\Admin\Controls\Ufae_Post_Control;
+use UFAE\Admin\Controls\Ufae_Control_Preset;
 
 if ( ! class_exists( 'Ufae_Register' ) ) {
 	/**
@@ -65,8 +73,9 @@ if ( ! class_exists( 'Ufae_Register' ) ) {
 		 * @return void
 		 */
 		public function ufae_register_custom_controller( $controls_manager ) {
-			require_once UFAE_DIR . 'admin/controls/class-ufae-control-preset.php';
 			$controls_manager->register( new Ufae_Control_Preset() );
+		
+			\Elementor\Plugin::instance()->controls_manager->add_group_control( 'ufae_post_control', new Ufae_Post_Control() );
 		}
 
 		/**
@@ -75,8 +84,20 @@ if ( ! class_exists( 'Ufae_Register' ) ) {
 		 * @return void
 		 */
 		public function ufae_register_widget() {
-			require_once UFAE_DIR . 'widget/class-ufae-widget.php';
-			\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Ufae_Widget() );
+
+			$widgets=[
+				'Simple',
+				'Stories',
+				'Post'
+			];
+
+			foreach($widgets as $widget){
+				$class_name='UFAE\Widget\\'.$widget.'\Ufae_'.$widget.'_Widget';
+
+				if(class_exists($class_name)){
+					\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new $class_name );
+				}
+			}
 		}
 	}
 }

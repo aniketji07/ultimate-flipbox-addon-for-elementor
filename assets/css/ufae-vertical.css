@@ -2,7 +2,7 @@
   --ufae-items-column: 3;
 }
 
-.ufae-wrapper .ufae-layout-vertical {
+.ufae-wrapper .ufae-layout-vertical:not([id^="ufae_simple_"]) {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (minmax(0, 1fr))[var];

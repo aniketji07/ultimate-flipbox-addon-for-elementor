@@ -1,16 +1,19 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {
+namespace UFAE\Includes;
+
+if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'Ufae_Ajax_Handler' ) ) {
+if (! class_exists('Ufae_Ajax_Handler')) {
 	/**
 	 * Class Ufae_Ajax_Handler
 	 *
 	 * Handles AJAX requests for the UFAE plugin.
 	 */
-	class Ufae_Ajax_Handler {
+	class Ufae_Ajax_Handler
+	{
 
 		/**
 		 * The single instance of the class.
@@ -24,8 +27,9 @@ if ( ! class_exists( 'Ufae_Ajax_Handler' ) ) {
 		 *
 		 * @return Ufae_Ajax_Handler
 		 */
-		public static function init() {
-			if ( null === self::$instance ) {
+		public static function init()
+		{
+			if (null === self::$instance) {
 				self::$instance = new self();
 			}
 			return self::$instance;
@@ -34,8 +38,9 @@ if ( ! class_exists( 'Ufae_Ajax_Handler' ) ) {
 		/**
 		 * Ufae_Ajax_Handler constructor.
 		 */
-		public function __construct() {
-			add_action( 'wp_ajax_ufae_preset_styles', array( $this, 'ufae_preset_styles' ) );
+		public function __construct()
+		{
+			add_action('wp_ajax_ufae_preset_styles', array($this, 'ufae_preset_styles'));
 		}
 
 		/**
@@ -44,22 +49,27 @@ if ( ! class_exists( 'Ufae_Ajax_Handler' ) ) {
 		 * Validates the nonce and retrieves the JSON data.
 		 * Sends a JSON response back to the client.
 		 */
-		public function ufae_preset_styles() {
-			if ( ! check_ajax_referer( 'ufae_preset_nonce', 'nonce', false ) ) {
-				wp_send_json_error( 'Invalid nonce provided.' );
-				wp_die();
-			}
-			$json_file_path = UFAE_URL . 'admin/controls/assets/js/ufae-controls-style.json';
-
-			$json_data = wp_remote_retrieve_body( wp_remote_get( $json_file_path ) );
-			$data      = json_decode( $json_data, true );
-
-			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				wp_send_json_error( 'Error decoding JSON data: ' . json_last_error_msg() );
+		public function ufae_preset_styles()
+		{
+			if (! check_ajax_referer('ufae_preset_nonce', 'nonce', false)) {
+				wp_send_json_error('Invalid nonce provided.');
 				wp_die();
 			}
 
-			wp_send_json_success( $data );
+			$widget_type = isset($_POST['widget_type']) ? sanitize_file_name($_POST['widget_type']) : 'stories';
+			$file_path = 'admin/controls/assets/presets/ufae-' . $widget_type . '-controls-style.json';
+			$json_file_path = UFAE_URL . $file_path;
+
+			// var_dump($json_file_path);
+			$json_data = wp_remote_retrieve_body(wp_remote_get($json_file_path));
+			$data      = json_decode($json_data, true);
+
+			if (json_last_error() !== JSON_ERROR_NONE) {
+				wp_send_json_error('Error decoding JSON data: ' . json_last_error_msg());
+				wp_die();
+			}
+
+			wp_send_json_success($data);
 		}
 	}
 }
